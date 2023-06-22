@@ -6,6 +6,7 @@ Class PPCharge
   Private m_Status
   Private m_Amount
   Private m_Curency '// Typo deliberate: reserved word in ASP
+  Private m_DateTime
   Private m_Description
   Private m_EventId
   Private m_EventType
@@ -49,6 +50,14 @@ Class PPCharge
 
   Public Property Get Curency()
      Curency = m_Curency
+  End Property
+
+  Public Property Let DateTime(p_Data)
+      m_DateTime = p_Data
+  End Property
+
+  Public Property Get DateTime()
+     DateTime = m_DateTime
   End Property
 
   Public Property Let Description(p_Data)

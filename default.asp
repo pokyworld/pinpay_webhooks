@@ -58,6 +58,7 @@ If Request.TotalBytes > 0 Then
   newCharge.Status = ojReq.data("data")("status_message")
   newCharge.Amount = ojReq.data("data")("amount")
   newCharge.Curency = ojReq.data("data")("currency")
+  newCharge.DateTime = ojReq.data("data")("created_at")
   newCharge.Description = ojReq.data("data")("description")
   newCharge.EventId = ojReq.data("token")
   newCharge.EventType = ojReq.data("type")
@@ -84,7 +85,7 @@ If Request.TotalBytes > 0 Then
   sql = sql & "'" & newCharge.Curency & "', " & vbCrlf
   sql = sql & "'" & FormatNumber(newCharge.Amount / 100, 2) & "', " & vbCrlf
   sql = sql & "'" & newCharge.Description & "', " & vbCrlf
-  sql = sql & "getdate());"
+  sql = sql & "'" & FormatDtTime(newCharge.DateTime) & "');"
   objFile.WriteLine "-- " & FormatDtTime(Now) & " | SQL:TRANS" & vbCrLf &  sql  & vbCrLf
   ' conn.Execute(sql)
 
@@ -93,7 +94,7 @@ If Request.TotalBytes > 0 Then
   sql = sql & "pay_amount = '" & FormatNumber(newCharge.Amount / 100, 2) & "', " & vbCrLf
   sql = sql & "pay_ref = '" & newCharge.ID & "', " & vbCrLf
   sql = sql & "pay_card = '" & newCharge.Customer.Card.CardString & "', " & vbCrLf
-  sql = sql & "updated_at = getdate(), " & vbCrLf
+  sql = sql & "updated_at = '" & FormatDtTime(newCharge.DateTime) & "', " & vbCrLf
   sql = sql & "WHERE invoice = '" & newCharge.Customer.Invoice & "', " & vbCrLf
   sql = sql & "AND customerId = '" & newCharge.Customer.ID & "';"
   objFile.WriteLine "-- " & FormatDtTime(Now) & " | SQL:INVOICE" & vbCrLf &  sql  & vbCrLf
