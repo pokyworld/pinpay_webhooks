@@ -58,6 +58,7 @@ Function ProcessCharge(sJSON)
   newCharge.Success = ojReq.data("data")("success")
   newCharge.Status = ojReq.data("data")("status_message")
   newCharge.Amount = ojReq.data("data")("amount")
+  newCharge.NetAmount = ojReq.data("data")("merchant_entitlement")
   newCharge.Curency = ojReq.data("data")("currency")
   newCharge.DateTime = ojReq.data("data")("created_at")
   newCharge.Description = ojReq.data("data")("description")
@@ -76,7 +77,7 @@ Function ProcessCharge(sJSON)
 
 '// Create SQL statement(s) for database
   sql = "INSERT INTO dbo.pp_transactions (eventId, eventType, customer_id, invoice_id, " & vbCrlf
-  sql = sql & "pay_id, pay_status, pay_currency, pay_amount, pay_notes, pay_date, created_at) VALUES (" & vbCrlf
+  sql = sql & "pay_id, pay_status, pay_currency, pay_amount, pay_net_amount, pay_notes, pay_date, created_at) VALUES (" & vbCrlf
   sql = sql & "'" & newCharge.EventId & "', "
   sql = sql & "'" & newCharge.EventType & "', " & vbCrlf
   sql = sql & "'" & newCharge.Customer.ID & "', "
@@ -85,6 +86,7 @@ Function ProcessCharge(sJSON)
   sql = sql & "'" & UCase(newCharge.Status) & "', " & vbCrlf
   sql = sql & "'" & newCharge.Curency & "', "
   sql = sql & "'" & FormatNumber(newCharge.Amount / 100, 2) & "', " & vbCrlf
+  sql = sql & "'" & FormatNumber(newCharge.NetAmount / 100, 2) & "', " & vbCrlf
   sql = sql & "'" & newCharge.Description & "', " & vbCrlf
   sql = sql & "'" & newCharge.DateTime & "', "
   sql = sql & "getdate());"
@@ -94,6 +96,7 @@ Function ProcessCharge(sJSON)
   sql = "UPDATE dbo.invoices SET "
   sql = sql & "pay_status = '" & newCharge.Status & "', " & vbCrLf
   sql = sql & "pay_amount = '" & FormatNumber(newCharge.Amount / 100, 2) & "', " & vbCrLf
+  sql = sql & "pay_net_amount = '" & FormatNumber(newCharge.NetAmount / 100, 2) & "', " & vbCrLf
   sql = sql & "pay_ref = '" & newCharge.ID & "', " & vbCrLf
   sql = sql & "pay_card = '" & newCharge.Customer.Card.CardString & "', " & vbCrLf
   sql = sql & "pay_date = '" & newCharge.DateTime & "', " & vbCrLf

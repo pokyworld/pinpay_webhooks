@@ -5,6 +5,7 @@ Class PPCharge
   Private m_Success
   Private m_Status
   Private m_Amount
+  Private m_NetAmount
   Private m_Curency '// Typo deliberate: reserved word in ASP
   Private m_DateTime
   Private m_Description
@@ -42,6 +43,14 @@ Class PPCharge
 
   Public Property Get Amount()
      Amount = m_Amount
+  End Property
+
+  Public Property Let NetAmount(p_Data)
+      m_NetAmount = p_Data
+  End Property
+
+  Public Property Get NetAmount()
+     NetAmount = m_NetAmount
   End Property
 
   Public Property Let Curency(p_Data)
